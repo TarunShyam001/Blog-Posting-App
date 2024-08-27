@@ -1,0 +1,64 @@
+/* Style for the blog title button */
+.blog-title {
+    background-color: #f1f1f1;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.blog-title:hover {
+    background-color: #ddd;
+}
+
+.blog-title h3 {
+    margin: 0;
+}
+
+/* Hide the content by default */
+.card-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+/* Expanded content styling */
+.card-content.expanded {
+    max-height: 500px; /* Adjust as needed for your content */
+}
+
+/* Style for the comments section */
+.comments-action input[type="text"] {
+    width: 80%;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.comments-action .btn {
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.comments-action .btn:hover {
+    background-color: #218838;
+}
+
+/* Style for the delete button in comments */
+.comment-items .btn-danger {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.comment-items .btn-danger:hover {
+    background-color: #c82333;
+}
