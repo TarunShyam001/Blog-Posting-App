@@ -1,17 +1,43 @@
-const express = require('express');
 const path = require('path');
-const blogController = require('./controllers/blogController');
+
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const errorController = require('./controllers/error');
+const sequelize = require('./util/database');
+
+const Blog = require('./model/blogs');
+const Comment = require('./model/comments')
 
 const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(express.urlencoded({ extended: true }));
+const blogRoutes = require('./routes/blogs');
 
-// Use the blog controller for routes
-app.use('/', blogController);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
+app.use(blogRoutes);
+app.use(errorController.get404);
+
+Comment.belongsTo(Blog, {constraints : true, onDelete : 'CASCADE'});
+Blog.hasMany(Comment);
+
+const port = 4560;
+
+sequelize
+// .sync()
+.sync({force : true})
+.then(() => {
+    // console.log(comment);
+    app.listen(port, () => {
+        console.log(`Server is running on port http://localhost:${port}/blogs
+            `);
+    });
+})
+.catch(err => {
+    console.log(err);
 });
+

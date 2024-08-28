@@ -1,55 +1,70 @@
-const express = require('express');
-const router = express.Router();
+const Blogs = require('../model/blogs');
 
-// Dummy data for blogs and comments
-let blogs = [
-    {
-        id: 1,
-        title: 'First Blog',
-        author: 'Author 1',
-        content: 'This is the content of the first blog.'
-    },
-    {
-        id: 2,
-        title: 'Second Blog',
-        author: 'Author 2',
-        content: 'This is the content of the second blog.'
-    }
-];
+const Comments = require('../model/comments')
 
-let comments = [
-    { id: 1, blogId: 1, data: 'First comment on the first blog' },
-    { id: 2, blogId: 2, data: 'First comment on the second blog' }
-];
+exports.getBlogs = (req, res, next) => {
+  Blogs.findAll({includes : [Comments]})
+  .then(blogs => {
+    res.render('home/data', {
+      blogs: blogs,
+      path: '/',
+      comments: blogs.map(blog => blog.comments)
+    });
+  })
+  .catch(err => {
+    console.log(err);
+  })
+};
 
-// Route to render the main page
-router.get('/', (req, res) => {
-    res.render('./home/data', { blogs, comments });
-});
+exports.getAddBlogs = (req, res, next) => {
+  res.render('home/form', {
+      path: '/blogs',
+      editing: false
+  });
+};
 
-// Route to handle adding a new comment
-router.post('/comments', (req, res) => {
-    const blogId = parseInt(req.body.blogId, 10);
-    const commentData = req.body.comments;
+exports.postAddBlogs = (req, res, next) => {
+  const title = req.body.title;
+  const author = req.body.author;
+  const content = req.body.content;
 
-    if (commentData && blogId) {
-        comments.push({
-            id: comments.length + 1,
-            blogId: blogId,
-            data: commentData
-        });
-    }
+  Blogs.create({ 
+    title: title,
+    author: author, 
+    content: content 
+  })
+  .then(result => {
+    res.redirect('/blogs');
+  })
+  .catch(err => {
+    console.log(err);
+  });
+};
 
-    res.redirect('/');
-});
+exports.getAddComments = (req, res, next) => {
+  const blogId = req.params.blogId; 
+  Blogs.findByPk(blogId, { include: [Comments] })
+      .then(blog => {
+          res.render('home/data', {
+              blogs: [blog],
+              path: `/blogs`,
+              comments: blog.comments || []
+          });
+      })
+      .catch(err => {
+          console.log(err);
+      });
+};
 
-// Route to handle deleting a comment
-router.post('/comments/delete', (req, res) => {
-    const commentId = parseInt(req.body.commentId, 10);
+exports.postAddComments = (req, res, next) => {
+  const blogId = req.body.blogId;
+  const commentData = req.body.comments;
 
-    comments = comments.filter(comment => comment.id !== commentId);
-
-    res.redirect('/');
-});
-
-module.exports = router;
+  Comments.create({ data: commentData, blogId: blogId })
+      .then(result => {
+          res.redirect(`/blogs`);
+      })
+      .catch(err => {
+          console.log(err);
+      });
+};
