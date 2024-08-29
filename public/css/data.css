@@ -1,64 +1,166 @@
-/* Style for the blog title button */
-.blog-title {
-    background-color: #f1f1f1;
-    border: none;
-    color: #333;
-    cursor: pointer;
+main {
     padding: 10px;
-    width: 100%;
-    text-align: left;
+    background-color: #f4f4f4;
+}
+
+.form-container {
+    margin-bottom: 30px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    gap: 10px;
+}
+
+.card-blog-items {
+    background-color: burlywood;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-blog-items:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.blog-header {
+    padding: 0;
+    background-color: burlywood;
+}
+
+.blog-title {
+    background: none;
+    border: none;
+    color: whitesmoke;
+    font-family: 'Times New Roman', Times, serif;
     font-size: 18px;
-    transition: background-color 0.3s ease;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    padding: 0;
+    margin-left: 20px;
 }
 
 .blog-title:hover {
-    background-color: #ddd;
+    text-decoration: underline;
+    color: aquamarine;
 }
 
-.blog-title h3 {
-    margin: 0;
-}
-
-/* Hide the content by default */
 .card-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+    padding: 15px 20px;
+    display: none; 
 }
 
-/* Expanded content styling */
 .card-content.expanded {
-    max-height: 500px; /* Adjust as needed for your content */
+    display: block;
 }
 
-/* Style for the comments section */
-.comments-action input[type="text"] {
-    width: 80%;
-    padding: 5px;
-    margin-right: 10px;
+.blog-author {
+    font-size: 20px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: blue;
+    font-weight: 600;
+    margin-bottom: 10px;
 }
 
-.comments-action .btn {
-    padding: 5px 10px;
-    background-color: #28a745;
-    color: white;
+.blog-content {
+    font-size: 20px;
+    font-style: italic;
+    color: aqua;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.comment-section {
+    margin-top: 20px;
+}
+
+.comments {
+    margin-bottom: 15px;
+}
+
+.comment-items {
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-data {
+    font-size: 14px;
+    color: #333;
+}
+
+.no-comments {
+    font-size: 14px;
+    color: #999;
+}
+
+.btn-danger {
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.comments-action .btn:hover {
-    background-color: #218838;
-}
-
-/* Style for the delete button in comments */
-.comment-items .btn-danger {
-    padding: 5px 10px;
+.btn-danger {
     background-color: #dc3545;
-    color: white;
-    border: none;
-    cursor: pointer;
 }
 
-.comment-items .btn-danger:hover {
-    background-color: #c82333;
+.btn-danger:hover {
+    color: #dc3545;
+    background-color: #fff;
+}
+
+.comment-form {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.comment-form input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    box-sizing: border-box;
+}
+
+.comment-form button[type="submit"] {
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.comment-form button[type="submit"]:hover {
+    color: #218838;
+    background-color: antiquewhite;
+}
+
+@media (max-width: 300px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .blog-header {
+        padding: 15px;
+    }
 }
