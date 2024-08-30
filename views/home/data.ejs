@@ -31,23 +31,27 @@
                                 <p class="blog-content"><%= blog.content %></p>
                                 <hr>
                                 <div class="comment-section">
-                                    <% if (comments.length > 0) { %>
-                                        <% for (let comment of comments) { %>
-                                        <% if (comment && comment.data) { %>
-                                            <article class="comments">
-                                                <div class="comment-items">
-                                                    <p class="comment-data"><%= comment.data %></p>
-                                                    <button class="btn-danger" type="submit"> Delete </button>
-                                                </div>
-                                            </article>
-                                        <% } %>
+                                    <% if (blog.comments.length > 0) { %>
+                                        <% for (let comment of blog.comments) { %>
+                                            <% if (comment && comment.data) { %>
+                                                <article class="comments">
+                                                    <div class="comment-items">
+                                                        <p class="comment-data"><%= comment.data %></p>
+                                                        <form action="/blogs/delete-comment" method="POST">
+                                                            <input type="hidden" value="<%= comment.id %>" name="commentId">
+                                                            <button class="btn-danger" type="submit">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </article>
+                                            <% } %>
                                         <% } %>
                                     <% } else { %>
                                         <h4 class="no-comments">No Comments</h4>
                                     <% } %>
                                 </div>
-                                <form class="comment-form" action="/blogs/<%= blog.id %>" method="POST">
+                                <form class="comment-form" action="/blogs/<%= blog.id %>/comments" method="POST">
                                     <input type="text" name="data" placeholder="Add a comment">
+                                    <input type="hidden" name="blogId" value="<%= blog.id %>">
                                     <button class="btn" type="submit"> Submit </button>
                                 </form>
                             </div>

@@ -1,70 +1,49 @@
-const Blogs = require('../model/blogs');
+const Blog = require('../model/blogs');
+const Comment = require('../model/comments');
 
-const Comments = require('../model/comments')
-
-exports.getBlogs = (req, res, next) => {
-  Blogs.findAll({includes : [Comments]})
-  .then(blogs => {
-    res.render('home/data', {
-      blogs: blogs,
-      path: '/',
-      comments: blogs.map(blog => blog.comments)
-    });
-  })
-  .catch(err => {
-    console.log(err);
-  })
-};
+exports.getBlogs = async (req, res) => {
+    try{
+        const blogs = await Blog.findAll();
+        const blogsWithComments = await Promise.all(blogs.map(async (blog) => {
+            const comments = await Comment.findAll({
+              where: { blogId: blog.id }
+            });
+            return {
+                ...blog.dataValues,
+                comments: comments
+            };
+        }));
+        res.render('home/data', {
+            blogs: blogsWithComments
+        });
+    }
+    catch (err){
+        console.error('Error fetching blogs or comments:', err);
+        res.status(500).send('An error occurred while fetching data');
+    }
+}
 
 exports.getAddBlogs = (req, res, next) => {
-  res.render('home/form', {
-      path: '/blogs',
-      editing: false
-  });
+    res.render('home/form', {
+        path: '/blogs',
+        editing: false
+    });
 };
 
 exports.postAddBlogs = (req, res, next) => {
-  const title = req.body.title;
-  const author = req.body.author;
-  const content = req.body.content;
-
-  Blogs.create({ 
-    title: title,
-    author: author, 
-    content: content 
-  })
-  .then(result => {
-    res.redirect('/blogs');
-  })
-  .catch(err => {
-    console.log(err);
-  });
-};
-
-exports.getAddComments = (req, res, next) => {
-  const blogId = req.params.blogId; 
-  Blogs.findByPk(blogId, { include: [Comments] })
-      .then(blog => {
-          res.render('home/data', {
-              blogs: [blog],
-              path: `/blogs`,
-              comments: blog.comments || []
-          });
-      })
-      .catch(err => {
-          console.log(err);
-      });
-};
-
-exports.postAddComments = (req, res, next) => {
-  const blogId = req.body.blogId;
-  const commentData = req.body.comments;
-
-  Comments.create({ data: commentData, blogId: blogId })
-      .then(result => {
-          res.redirect(`/blogs`);
-      })
-      .catch(err => {
-          console.log(err);
-      });
-};
+    const title = req.body.title;
+    const author = req.body.author;
+    const content = req.body.content;
+  
+    Blog.create({ 
+      title: title,
+      author: author, 
+      content: content 
+    })
+    .then(result => {
+      res.redirect('/blogs');
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  };
