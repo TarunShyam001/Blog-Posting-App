@@ -31,8 +31,8 @@ Blog.hasMany(Comment);
 const port = 4560;
 
 sequelize
-// .sync()
-.sync({force : true})
+.sync()
+// .sync({force : true})
 .then(() => {
     // console.log(comment);
     app.listen(port, () => {

@@ -9,16 +9,7 @@ const Comments = sequelize.define('comments', {
         allowNull: false,
         primaryKey: true
     },
-    data : Sequelize.TEXT,
-    // blogId: {
-    //     type: Sequelize.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //       model: 'Blogs',
-    //       key: 'id'
-    //     }
-    //   }
-
+    data : Sequelize.TEXT
 });
 
 module.exports = Comments;
