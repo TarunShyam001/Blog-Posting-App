@@ -26,13 +26,13 @@ app.use(blogRoutes);
 app.use(commentRoutes);
 app.use(errorController.get404);
 
-// Blog.hasMany(Comment);
+Blog.hasMany(Comment);
 
 const port = 4560;
 
 sequelize
-.sync()
-// .sync({force : true})
+// .sync()
+.sync({force : true})
 .then(() => {
     // console.log(comment);
     app.listen(port, () => {

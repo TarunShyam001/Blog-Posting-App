@@ -10,14 +10,14 @@ const Comments = sequelize.define('comments', {
         primaryKey: true
     },
     data : Sequelize.TEXT,
-    blogId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Blogs',
-          key: 'id'
-        }
-      }
+    // blogId: {
+    //     type: Sequelize.INTEGER,
+    //     allowNull: false,
+    //     references: {
+    //       model: 'Blogs',
+    //       key: 'id'
+    //     }
+    //   }
 
 });
 
